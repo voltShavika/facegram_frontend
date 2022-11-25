@@ -1,6 +1,32 @@
-import React from 'react'
+import React,{useState} from 'react'
+import axios from 'axios';
 
 function Home() {
+  const [iname,setName] = useState("");
+  const [ipass,setPass] = useState("");
+  const [loading, setLoading] = useState(false);
+  var prod = false;
+  var url = 'https://facegaram.herokuapp.com/api/login'
+  if(!prod){
+    url = "http://localhost/api/login"
+  }
+  const handleClick = ()=>{
+    setLoading(true);
+    axios.post(url, {
+      email: iname,
+      password: ipass
+    }).then(res => {
+      setLoading(false);
+      if(res.data.code == 1){
+        console.log(res.data.msg);
+      }
+      else{
+        console.log("No Bro, Wrong Password")
+      }
+    }).catch(e => {
+      console.log(e);
+    })
+  }
   return (
     <>
       <div className='container'>
@@ -13,11 +39,15 @@ function Home() {
                 <div className='d-flex justify-content-center'>
                   <h1>Facegram</h1>
                 </div>
+                {
+                  loading && <h4>Loading....</h4>
+                }
+                <input value={iname} onChange={(e)=> setName(e.target.value)} type="text" className='form-control' placeholder='Enter your email' />
+                <br/>
+                <input value={ipass} onChange={(e)=> setPass(e.target.value)} type="text" className='form-control' placeholder='Enter your password' />
                 <br />
-                <input type="text" className='form-control' placeholder='Enter your email' />
-                <input type="text" className='form-control' placeholder='Enter your password' />
                 <div className='d-flex justify-content-center'>
-                  <button className='form-control btn btn-primary'>Login</button>
+                  <button onClick={handleClick} className='form-control btn btn-primary'>Login</button>
                 </div>
             </div>
             <div className='row'>
