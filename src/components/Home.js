@@ -8,10 +8,10 @@ import {LOGIN_API} from '../config/api'
 const validateFormFields = (email,pass)=>{
   var errors = [];
   if(email.indexOf("@")=== -1){
-    errors.push("type proper email");
+    errors.push("Invalid Email");
   }
   if(pass.length<1){
-    errors.push("blank password not excepted");
+    errors.push("Blank password not accepted");
   }
   return errors;
 
@@ -55,25 +55,27 @@ function Home() {
   }
   return (
     <>
-      <div className='container'>
-        <div className='row mt-5'>
+      <div className='container-fluid' style={{backgroundColor: "#F5F4F5"}}>
+        <div className='row'>
           <div className='col-md-6'>
-            <img className='img-fluid' src="https://img.freepik.com/free-psd/close-up-phone-mockup-chat_23-2149113173.jpg?size=626&ext=jpg" />
-          </div>
-          <div className='col-md-6'>
-            <div className='row'>
+            <div className='row m-5'>
+              <div className='card p-5'>
                 <div className='d-flex justify-content-center'>
-                  <h1>Facegram</h1>
+                  <h1 style={{fontFamily: "Baskerville-SemiBoldItalic", fontSize: "60px"}}>facegram</h1>
                 </div>
-                
-                <ul>
-                  {
-                    errors.map((error,i)=>{
-                        return <li key={i}>{error}</li>
+				{
+					errors.length > 0 && 
+					<div className='alert alert-danger'>
+						<ul>
+						{
+							errors.map((error,i)=>{
+								return <li key={i}>{error}</li>
 
-                    })
-                  }
-                </ul>
+							})
+						}
+						</ul>
+					</div>
+				}
                 <input value={iname} onChange={(e)=> setName(e.target.value)} type="text" className='form-control' placeholder='Enter your email' />
                 <br/>
                 <input value={ipass} onChange={(e)=> setPass(e.target.value)} type="text" className='form-control' placeholder='Enter your password' />
@@ -82,21 +84,34 @@ function Home() {
                   {
                     loading && <h4>Loading....</h4>
                   }
-                  <button onClick={handleClick} className='form-control btn btn-primary'>Login</button>
+                  <button onClick={handleClick} className='btn btn-primary'>Login</button>
                 </div>
+                <div className='text-center mt-3'>
+                  <Link>Forgot your password ?</Link>
+                </div>
+              </div>
+              
             </div>
-            <div className='row'>
-              <div className='d-flex justify-content-center'>
-                <p>Dont have an account <Link to='/signup'>Signup</Link></p>
+            <div className='row m-5'>
+              <div className='card p-3'>
+                <div className='text-center'>
+                  <p className='m-1'>Dont have an account ? <Link to='/signup'>Signup</Link> here</p>
+                </div>
               </div>
             </div>
-              
-              
+          </div>
+          <div className='col-md-6'>
+            <div className='text-center'>
+              <img className='float-end' style={{height: "100vh"}} src={require("../images/home_image.png")} />
+            </div>
+            
           </div>
         </div>
       </div>
     </>
   )
 }
+
+// style={{display: "block", margin: 'auto'}}
 
 export default Home;
