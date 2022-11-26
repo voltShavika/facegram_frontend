@@ -1,10 +1,14 @@
 import React,{useState} from 'react'
 import axios from 'axios';
 
+import {Link, useNavigate} from 'react-router-dom';
+
 function Home() {
   const [iname,setName] = useState("");
   const [ipass,setPass] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
   var prod = false;
   var url = 'https://facegaram.herokuapp.com/api/login'
   if(!prod){
@@ -19,6 +23,7 @@ function Home() {
       setLoading(false);
       if(res.data.code == 1){
         console.log(res.data.msg);
+        navigate("/dashboard")
       }
       else{
         console.log("No Bro, Wrong Password")
@@ -52,7 +57,7 @@ function Home() {
             </div>
             <div className='row'>
               <div className='d-flex justify-content-center'>
-                <p>Dont have an account <a href='/api/signup'>Signup</a></p>
+                <p>Dont have an account <Link to='/signup'>Signup</Link></p>
               </div>
             </div>
               
