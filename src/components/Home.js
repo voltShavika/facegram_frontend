@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import axios from 'axios';
 
 import {Link, useNavigate} from 'react-router-dom';
-
+import {LOGIN_API} from '../config/api'
 
 
 const validateFormFields = (email,pass)=>{
@@ -24,17 +24,13 @@ function Home() {
   const [errors,setErrors] = useState([]);
 
   const navigate = useNavigate();
-  var prod = true;
-  var url = 'https://facegaram.herokuapp.com/api/login'
-  if(!prod){
-    url = "http://localhost/api/login"
-  }
+  
   const handleClick = ()=>{
     var formErrors = validateFormFields(iname,ipass);
     if(formErrors.length<1){
       setErrors([]);
       setLoading(true);
-      axios.post(url, {
+      axios.post(LOGIN_API, {
         email: iname,
         password: ipass
       }).then(res => {

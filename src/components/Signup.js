@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {SIGNUP_API} from '../config/api'
 
 const validateFormFields = (name, pass, number, email) => {
     var errors = [];
@@ -29,17 +30,13 @@ export default function Signup() {
     const [errors,setErrors] = useState([]);
 
     const navigate = useNavigate();
-    var prod = true;
-    var url = 'https://facegaram.herokuapp.com/api/signup'
-    if(!prod){
-        url = "http://localhost/api/signup"
-    }
+
     const handleClick = () => {
         var formErrors = validateFormFields(name, pass, numb, email);
         if(formErrors.length < 1){
             setErrors([]);
             setLoading(true);
-            axios.post(url , {
+            axios.post(SIGNUP_API , {
                 name:name,
                 email:email,
                 password:pass,
