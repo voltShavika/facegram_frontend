@@ -1,16 +1,18 @@
 import React from 'react'
 
-export default function PostCard() {
+export default function PostCard(props) {
+    const post = props.post;
+    const date = new Date(post.createdAt);
+    const date_str = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
   return (
     <div className='col-md-3 mb-5'>
         <div className="card">
-            <img src="https://picsum.photos/id/102/1000/1000" className="card-img-top" alt="..." />
+            <img src={post.image} className="card-img-top" alt="..." />
             <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <p className="card-text">my awesome caption</p>
+                <p className="card-text">{post.caption}</p>
             </div>
             <div className="card-footer">
-                <small className="text-muted">Last updated 3 mins ago</small>
+                <small className="text-muted">{post.postedBy.name} - {date_str}</small>
             </div>
         </div>
     </div>
