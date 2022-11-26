@@ -3,34 +3,59 @@ import axios from 'axios';
 
 import {Link, useNavigate} from 'react-router-dom';
 
+
+
+const validateFormFields = (email,pass)=>{
+  var errors = [];
+  if(email.indexOf("@")=== -1){
+    errors.push("type proper email");
+  }
+  if(pass.length<1){
+    errors.push("blank password not excepted");
+  }
+  return errors;
+
+}
+
 function Home() {
   const [iname,setName] = useState("");
   const [ipass,setPass] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors,setErrors] = useState([]);
 
   const navigate = useNavigate();
   var prod = false;
   var url = 'https://facegaram.herokuapp.com/api/login'
   if(!prod){
-    url = "http://localhost/api/login"
+    url = "http://localhos/api/login"
   }
   const handleClick = ()=>{
-    setLoading(true);
-    axios.post(url, {
-      email: iname,
-      password: ipass
-    }).then(res => {
-      setLoading(false);
-      if(res.data.code == 1){
-        console.log(res.data.msg);
-        navigate("/dashboard")
-      }
-      else{
-        console.log("No Bro, Wrong Password")
-      }
-    }).catch(e => {
-      console.log(e);
-    })
+    var formErrors = validateFormFields(iname,ipass);
+    if(formErrors.length<1){
+      setErrors([]);
+      setLoading(true);
+      axios.post(url, {
+        email: iname,
+        password: ipass
+      }).then(res => {
+        setLoading(false);
+        if(res.data.code == 1){
+          console.log(res.data.msg);
+          navigate("/dashboard")
+        }
+        else{
+          formErrors.push(res.data.msg);
+          setErrors([...formErrors]);
+        }
+      }).catch(e => {
+        setLoading(false);
+        formErrors.push("Something went wrong try Later");
+        setErrors([...formErrors]);
+      })
+    }else{
+      setErrors([...formErrors]);
+    } 
+    
   }
   return (
     <>
@@ -44,14 +69,23 @@ function Home() {
                 <div className='d-flex justify-content-center'>
                   <h1>Facegram</h1>
                 </div>
-                {
-                  loading && <h4>Loading....</h4>
-                }
+                
+                <ul>
+                  {
+                    errors.map((error,i)=>{
+                        return <li key={i}>{error}</li>
+
+                    })
+                  }
+                </ul>
                 <input value={iname} onChange={(e)=> setName(e.target.value)} type="text" className='form-control' placeholder='Enter your email' />
                 <br/>
                 <input value={ipass} onChange={(e)=> setPass(e.target.value)} type="text" className='form-control' placeholder='Enter your password' />
                 <br />
                 <div className='d-flex justify-content-center'>
+                  {
+                    loading && <h4>Loading....</h4>
+                  }
                   <button onClick={handleClick} className='form-control btn btn-primary'>Login</button>
                 </div>
             </div>
