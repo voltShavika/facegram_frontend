@@ -29,7 +29,7 @@ export default function Signup() {
     const [errors,setErrors] = useState([]);
 
     const navigate = useNavigate();
-    var prod = false;
+    var prod = true;
     var url = 'https://facegaram.herokuapp.com/api/signup'
     if(!prod){
         url = "http://localhost/api/signup"
