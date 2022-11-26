@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
     const [name,setName] = useState("");
@@ -7,6 +8,7 @@ export default function Signup() {
     const [numb,setNumber] = useState("");
     const [email,setMail] = useState("");
     const [loading,setLoading] = useState(false);
+    const navigate = useNavigate();
     var prod = false;
     var url = 'https://facegaram.herokuapp.com/api/signup'
     if(!prod){
@@ -23,6 +25,9 @@ export default function Signup() {
         }).then((res)=>{
             setLoading(false);
             console.log(res.data);
+            if(res.data.code==1){
+                navigate("/dashboard")
+            }
         }).catch((e)=>{
             console.log(e);
         })
