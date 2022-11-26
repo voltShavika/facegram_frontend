@@ -24,10 +24,10 @@ function Home() {
   const [errors,setErrors] = useState([]);
 
   const navigate = useNavigate();
-  var prod = false;
+  var prod = true;
   var url = 'https://facegaram.herokuapp.com/api/login'
   if(!prod){
-    url = "http://localhos/api/login"
+    url = "http://localhost/api/login"
   }
   const handleClick = ()=>{
     var formErrors = validateFormFields(iname,ipass);
