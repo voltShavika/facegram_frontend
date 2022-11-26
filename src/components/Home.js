@@ -59,13 +59,13 @@ function Home() {
   }
   return (
     <>
-      <div className='container-fluid'>
+      <div className='container-fluid' style={{backgroundColor: "#F5F4F5"}}>
         <div className='row'>
           <div className='col-md-6'>
             <div className='row m-5'>
               <div className='card p-5'>
                 <div className='d-flex justify-content-center'>
-                  <h1>Facegram</h1>
+                  <h1 style={{fontFamily: "Baskerville-SemiBoldItalic", fontSize: "60px"}}>facegram</h1>
                 </div>
 				{
 					errors.length > 0 && 
@@ -97,7 +97,7 @@ function Home() {
               
             </div>
             <div className='row m-5'>
-              <div className='card p-1'>
+              <div className='card p-3'>
                 <div className='text-center'>
                   <p className='m-1'>Dont have an account ? <Link to='/signup'>Signup</Link> here</p>
                 </div>

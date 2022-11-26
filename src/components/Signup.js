@@ -69,13 +69,13 @@ export default function Signup() {
 
   return (
     <>
-        <div className='container'>
+        <div className='container-fluid' style={{height: "100vh", backgroundColor: "#F5F4F5"}}>
             <div className='row'>
-                <div className='col-md-3'></div>
-                <div className='col-md-6 m-5'>
+                <div className='col-md-4'></div>
+                <div className='col-md-4 m-4'>
                     <div className='card p-5'>
                         <div className='text-center mt-2'>
-                            <h1>Facegram</h1>
+                            <h1 style={{fontFamily: "Baskerville-SemiBoldItalic", fontSize: "60px"}}>facegram</h1>
                             <p>Signup to create and see posts of community</p>
                         </div>
                         {
@@ -88,7 +88,7 @@ export default function Signup() {
                                     })
                                 }
                                 </ul>
-                        </div>
+                            </div>
                         }
                         
                         
@@ -110,7 +110,7 @@ export default function Signup() {
                     </div>
                     
                 </div>
-                <div className='col-md-3'></div>
+                <div className='col-md-4'></div>
             </div>
             
         </div>
