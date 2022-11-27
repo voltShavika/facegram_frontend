@@ -1,6 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 import { Create_post_API } from '../config/api';
+
+
+
 const validation = (caption,image)=>{
     var errors = [];
     if(image.length == 0){
@@ -20,8 +26,22 @@ export default function CreatePost(props) {
     const [errors,setErrors] = useState([]);
     const [loading,setLoading] = useState(false);
 
-    const handleClick = ()=>{
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => {
+        setCaption("");
+        setImage("");
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false);
+    }
+
+    const handleCreate = ()=>{
+        console.log("I am called");
         var formErrors = validation(caption,image);
+        console.log(formErrors);
         if(formErrors.length<1){
             setErrors([]);
             setLoading(true);
@@ -31,6 +51,7 @@ export default function CreatePost(props) {
                 image:image
             }).then((res)=>{
                 setLoading(false);
+                setShow(false);
                 if(res.data.code===1){
                     props.callback(res.data.data);
                 }else{
@@ -43,64 +64,56 @@ export default function CreatePost(props) {
                 setErrors([...formErrors]);
             })
         }else{
+            console.log("I am in error");
             setErrors([...formErrors]);
         }
     }
     return (
     <div className='row'>
         <div className='col-md-4 p-3'>
-            
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Create a new Post
-            </button>
+            <Button variant="primary" onClick={handleShow}>
+                Create new Post
+            </Button>
+            <Modal show={show} onHide={handleClose} backdrop="static" keyboard="false">
+                <Modal.Header closeButton>
+                    <Modal.Title>Create an Amazing Post</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {
+                        errors.length > 0 &&
+                        <div className="alert alert-danger">
+                            <ul>
+                                {
+                                    errors.map((err,i)=>{
+                                        return <li key={i}>{err}</li>
 
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="staticBackdropLabel">Create new post</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    })
+                                }
+                            </ul>
                         </div>
-                        <div class="modal-body">
-                            {
-                                errors.length > 1 &&
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        {
-                                            errors.map((err,i)=>{
-                                                return <li key={i}>{err}</li>
 
-                                            })
-                                        }
-                                    </ul>
-                                 </div>
-
-                            }
-                            
-                            
-                            <div className="mb-3">
-                                <label for="caption" class="form-label" >Caption</label>
-                                <input type="email" class="form-control" id="caption" value={caption} onChange={(e)=> setCaption(e.target.value)}/>
-                            </div>
-                            <div className="mb-3">
-                                <label for="url" class="form-label">Image URL</label>
-                                <input type="text" class="form-control" id="url"  value={image} onChange={(e)=> setImage(e.target.value)}/>
-                            </div>
-                        
-                        </div>
-                        <div className="modal-footer">
-                            {
-                                loading && <h5>Loading........</h5>
-                            }
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={handleClick}>Create</button>
-                        </div>
+                    }
+                    <div className="mb-3">
+                        <label className="form-label" >Caption</label>
+                        <input type="email" className="form-control" id="caption" value={caption} onChange={(e)=> setCaption(e.target.value)}/>
                     </div>
-                </div>
-            </div> 
-
-
-
+                    <div className="mb-3">
+                        <label className="form-label">Image URL</label>
+                        <input type="text" className="form-control" id="url"  value={image} onChange={(e)=> setImage(e.target.value)}/>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    {
+                        loading && <h5>Loading........</h5>
+                    }
+                    <Button variant="secondary" onClick={handleClose}>
+                        Discard
+                    </Button>
+                    <Button variant="primary" onClick={handleCreate}>
+                        Post It
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
         </div>
     </div>
