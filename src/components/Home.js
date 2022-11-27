@@ -60,8 +60,8 @@ function Home() {
           <div className='col-md-6'>
             <div className='row m-5'>
               <div className='card p-5'>
-                <div className='d-flex justify-content-center'>
-                  <h1 style={{fontFamily: "Baskerville-SemiBoldItalic", fontSize: "60px"}}>facegram</h1>
+                <div className='text-center p-2'>
+				  <img className="img-fluid" src={require("../images/logo-ls.png")} />
                 </div>
 				{
 					errors.length > 0 && 

@@ -16,7 +16,7 @@ const validation = (caption,image)=>{
 
 export default function CreatePost(props) {
     const [caption,setCaption] = useState("");
-    const [image,setimage] = useState("");
+    const [image,setImage] = useState("");
     const [errors,setErrors] = useState([]);
     const [loading,setLoading] = useState(false);
 
@@ -48,24 +48,60 @@ export default function CreatePost(props) {
     }
     return (
     <div className='row'>
-        <div className='col-md-4'>
-            <h4>Create a new and exciting post!!!</h4>
-            <ul>
-            {
-                errors.map((err,i)=>{
-                    return <li key={i}>{err}</li>
+        <div className='col-md-4 p-3'>
+            
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Create a new Post
+            </button>
 
-                })
-            }
-            </ul>
-            <input className='form-control' type="text" value={caption} onChange={(e)=> setCaption(e.target.value)} placeholder="Enter your Caption" />
-            <br/>
-            <input className='form-control' type="text" value={image} onChange={(e)=> setimage(e.target.value)} placeholder="Enter your Image URL" />
-            {
-                loading && <h5>Loading........</h5>
-            }
-            <br/>
-            <button onClick={handleClick} className='btn btn-primary'>Click here to post</button>
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="staticBackdropLabel">Create new post</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {
+                                errors.length > 1 &&
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        {
+                                            errors.map((err,i)=>{
+                                                return <li key={i}>{err}</li>
+
+                                            })
+                                        }
+                                    </ul>
+                                 </div>
+
+                            }
+                            
+                            
+                            <div className="mb-3">
+                                <label for="caption" class="form-label" >Caption</label>
+                                <input type="email" class="form-control" id="caption" value={caption} onChange={(e)=> setCaption(e.target.value)}/>
+                            </div>
+                            <div className="mb-3">
+                                <label for="url" class="form-label">Image URL</label>
+                                <input type="text" class="form-control" id="url"  value={image} onChange={(e)=> setImage(e.target.value)}/>
+                            </div>
+                        
+                        </div>
+                        <div className="modal-footer">
+                            {
+                                loading && <h5>Loading........</h5>
+                            }
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary" onClick={handleClick}>Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+
+
+
         </div>
     </div>
     )
