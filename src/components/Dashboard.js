@@ -4,12 +4,16 @@ import Header from "./Header";
 import PostCard from './PostCard';
 import CreatePost from './CreatePost';
 
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 import {POSTS_API} from '../config/api'
 
 function Dashboard() {
   
   const [posts, setPosts] = useState([]);
   const [loading,setLoading] = useState(false);
+  
   
   const getPostCallback = (new_post) => {
     setPosts([new_post, ...posts]);
@@ -33,9 +37,11 @@ function Dashboard() {
 
   return (
     <>
+      <Header />
       <div className='container-fluid'>
-        <Header />
+		
         <CreatePost callback={getPostCallback} />
+        <h2>Browse</h2>
         <hr/>
         <div className='row'>
           <div className='col'> 

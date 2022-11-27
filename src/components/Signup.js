@@ -72,8 +72,8 @@ export default function Signup() {
                 <div className='col-md-4 m-4'>
                     <div className='card p-5'>
                         <div className='text-center mt-2'>
-                            <h1 style={{fontFamily: "Baskerville-SemiBoldItalic", fontSize: "60px"}}>facegram</h1>
-                            <p>Signup to create and see posts of community</p>
+                            <img className="img-fluid" src={require("../images/logo-ls.png")} />
+                            <p className="mt-1">Signup to create and see posts of community</p>
                         </div>
                         {
                             errors.length > 0 &&

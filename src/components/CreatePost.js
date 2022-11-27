@@ -1,6 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 import { Create_post_API } from '../config/api';
+
+
+
 const validation = (caption,image)=>{
     var errors = [];
     if(image.length == 0){
@@ -16,12 +22,27 @@ const validation = (caption,image)=>{
 
 export default function CreatePost(props) {
     const [caption,setCaption] = useState("");
-    const [image,setimage] = useState("");
+    const [image,setImage] = useState("");
     const [errors,setErrors] = useState([]);
     const [loading,setLoading] = useState(false);
 
-    const handleClick = ()=>{
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => {
+        setCaption("");
+        setImage("");
+        setErrors([]);
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false);
+    }
+
+    const handleCreate = ()=>{
+        console.log("I am called");
         var formErrors = validation(caption,image);
+        console.log(formErrors);
         if(formErrors.length<1){
             setErrors([]);
             setLoading(true);
@@ -31,6 +52,7 @@ export default function CreatePost(props) {
                 image:image
             }).then((res)=>{
                 setLoading(false);
+                setShow(false);
                 if(res.data.code===1){
                     props.callback(res.data.data);
                 }else{
@@ -43,29 +65,57 @@ export default function CreatePost(props) {
                 setErrors([...formErrors]);
             })
         }else{
+            console.log("I am in error");
             setErrors([...formErrors]);
         }
     }
     return (
     <div className='row'>
-        <div className='col-md-4'>
-            <h4>Create a new and exciting post!!!</h4>
-            <ul>
-            {
-                errors.map((err,i)=>{
-                    return <li key={i}>{err}</li>
+        <div className='col-md-4 p-3'>
+            <Button variant="primary" onClick={handleShow}>
+                Create new Post
+            </Button>
+            <Modal show={show} onHide={handleClose} backdrop="static" keyboard="false">
+                <Modal.Header closeButton>
+                    <Modal.Title>Create an Amazing Post</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {
+                        errors.length > 0 &&
+                        <div className="alert alert-danger">
+                            <ul>
+                                {
+                                    errors.map((err,i)=>{
+                                        return <li key={i}>{err}</li>
 
-                })
-            }
-            </ul>
-            <input className='form-control' type="text" value={caption} onChange={(e)=> setCaption(e.target.value)} placeholder="Enter your Caption" />
-            <br/>
-            <input className='form-control' type="text" value={image} onChange={(e)=> setimage(e.target.value)} placeholder="Enter your Image URL" />
-            {
-                loading && <h5>Loading........</h5>
-            }
-            <br/>
-            <button onClick={handleClick} className='btn btn-primary'>Click here to post</button>
+                                    })
+                                }
+                            </ul>
+                        </div>
+
+                    }
+                    <div className="mb-3">
+                        <label className="form-label" >Caption</label>
+                        <input type="email" className="form-control" id="caption" value={caption} onChange={(e)=> setCaption(e.target.value)}/>
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Image URL</label>
+                        <input type="text" className="form-control" id="url"  value={image} onChange={(e)=> setImage(e.target.value)}/>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    {
+                        loading && <h5>Loading........</h5>
+                    }
+                    <Button variant="secondary" onClick={handleClose}>
+                        Discard
+                    </Button>
+                    <Button variant="primary" onClick={handleCreate}>
+                        Post It
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     </div>
     )
