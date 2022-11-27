@@ -31,6 +31,7 @@ export default function CreatePost(props) {
     const handleShow = () => {
         setCaption("");
         setImage("");
+        setErrors([]);
         setShow(true);
     }
 
