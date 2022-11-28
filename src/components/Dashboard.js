@@ -40,7 +40,7 @@ function Dashboard() {
 
   return (
     <>
-      <Header name={userData.userObj.name}/>
+      <Header name={userData.userObj != null? userData.userObj.name: ""}/>
       <div className='container-fluid'>
 		
         <CreatePost callback={getPostCallback} />

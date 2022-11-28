@@ -1,4 +1,7 @@
-import { fetch_login_err ,fetch_login_suc,fetch_login_req } from "./actions";
+import {
+    fetch_login_err ,fetch_login_suc,fetch_login_req,
+    fetch_signup_req,fetch_signup_succ,fetch_signup_err
+} from "./actions";
 
 const initialState = {
     loggedIn:false,
@@ -22,6 +25,26 @@ const reducer = (state=initialState , action)=>{
             errors:[]
         }
         case fetch_login_err :return {
+            ...state,
+            loading:false,
+            loggedIn:false,
+            errors:[...action.payload],
+            userObj: null
+        }
+
+        case fetch_signup_req: return {
+            ...state,
+            loading:true,
+            errors:[]
+        }
+        case fetch_signup_succ : return{
+            ...state,
+            loading:false,
+            loggedIn:true,
+            userObj: action.payload,
+            errors:[]
+        }
+        case fetch_signup_err :return {
             ...state,
             loading:false,
             loggedIn:false,

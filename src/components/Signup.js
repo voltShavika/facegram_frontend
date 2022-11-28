@@ -1,7 +1,9 @@
-import React,{useState} from 'react';
+import React,{useState, useRef} from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import {SIGNUP_API} from '../config/api';
+import { useSelector,useDispatch } from 'react-redux';
+import { callSignupApi, fetchSignupErr } from '../redux/user/actions';
 
 const validateFormFields = (name, pass, number, email) => {
     var errors = [];
@@ -21,45 +23,32 @@ const validateFormFields = (name, pass, number, email) => {
 }
 
 export default function Signup() {
-    const [name,setName] = useState("");
-    const [pass,setPass] = useState("");
-    const [numb,setNumber] = useState("");
-    const [email,setMail] = useState("");
-    const [loading,setLoading] = useState(false);
+    const nameRef = useRef();
+    const passRef = useRef();
+    const emailRef = useRef();
+    const numRef = useRef();
 
-    const [errors,setErrors] = useState([]);
+    const errors = useSelector((state)=>state.user.errors);
+    const loading = useSelector((state)=>state.user.loading);
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleClick = () => {
+        const name = nameRef.current.value;
+        const pass = passRef.current.value;
+        const numb = numRef.current.value;
+        const email  = emailRef.current.value;
+
+        
+
         var formErrors = validateFormFields(name, pass, numb, email);
         if(formErrors.length < 1){
-            setErrors([]);
-            setLoading(true);
-            axios.post(SIGNUP_API , {
-                name:name,
-                email:email,
-                password:pass,
-                number:numb
-
-            }).then((res)=>{
-                setLoading(false);
-                console.log(res.data);
-                if(res.data.code==1){
-                    navigate("/dashboard")
-                }else{
-                    formErrors.push(res.data.msg);
-                    setErrors([...formErrors]);
-                }
-            }).catch((e)=>{
-                setLoading(false);
-                formErrors.push("Something went wrong. Try Later");
-                setErrors([...formErrors]);
-               
-            })
+            dispatch(callSignupApi(name,pass,email,numb,navigate))
+            
         }
         else{
-            setErrors([...formErrors])
+            dispatch(fetchSignupErr(formErrors));
         }
         
     }
@@ -89,13 +78,13 @@ export default function Signup() {
                         }
                         
                         
-                        <input type="txt"  value = {name} onChange={(e)=> setName(e.target.value)} className='form-control' placeholder='Enter your name' />
+                        <input type="text"  ref={nameRef} className='form-control' placeholder='Enter your name' />
                         <br/>
-                        <input type="txt" value={email} onChange={(e)=>setMail(e.target.value)} className='form-control' placeholder='Enter your email-id' />
+                        <input type="text" ref={emailRef} className='form-control' placeholder='Enter your email-id' />
                         <br/>
-                        <input type= "number" value={numb} onChange={(e)=> setNumber(e.target.value)} className='form-control' placeholder='Enter your phone number' />
+                        <input type= "number" ref={numRef}  className='form-control' placeholder='Enter your phone number' />
                         <br/>
-                        <input type="txt" value={pass} onChange={(e)=>setPass(e.target.value)} className='form-control' placeholder='Enter your password' />
+                        <input type="text"  ref={passRef} className='form-control' placeholder='Enter your password' />
                         <br/>
                         {
                             loading && <h6>Loading......</h6>
