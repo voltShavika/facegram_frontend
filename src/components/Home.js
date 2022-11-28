@@ -1,8 +1,11 @@
-import React,{useState} from 'react'
+import React,{useRef, useState} from 'react'
 import axios from 'axios';
 
 import {Link, useNavigate} from 'react-router-dom';
 import {LOGIN_API} from '../config/api'
+import { useSelector, useDispatch } from 'react-redux';
+
+import {callLoginApi, fetchLoginErr} from "../redux/user/actions"
 
 
 const validateFormFields = (email,pass)=>{
@@ -18,38 +21,26 @@ const validateFormFields = (email,pass)=>{
 }
 
 function Home() {
-  const [iname,setName] = useState("");
-  const [ipass,setPass] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errors,setErrors] = useState([]);
 
+  const userData = useSelector((state) => state.user);
+  const loggedIn = userData.loggedIn;
+  const email = userData.email;
+  const errors = userData.errors;
+  const loading = userData.loading;
+  const iemailRef = useRef();
+  const ipassRef = useRef();
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   
   const handleClick = ()=>{
-    var formErrors = validateFormFields(iname,ipass);
+    var email_val = iemailRef.current.value;
+    var password_val = ipassRef.current.value;
+    var formErrors = validateFormFields(email_val, password_val);
     if(formErrors.length<1){
-      setErrors([]);
-      setLoading(true);
-      axios.post(LOGIN_API, {
-        email: iname,
-        password: ipass
-      }).then(res => {
-        setLoading(false);
-        if(res.data.code == 1){
-          console.log(res.data.msg);
-          navigate("/dashboard")
-        }
-        else{
-          formErrors.push(res.data.msg);
-          setErrors([...formErrors]);
-        }
-      }).catch(e => {
-        setLoading(false);
-        formErrors.push("Something went wrong try Later");
-        setErrors([...formErrors]);
-      })
+      dispatch(callLoginApi(email_val, password_val, navigate));
     }else{
-      setErrors([...formErrors]);
+      dispatch(fetchLoginErr(formErrors));
     } 
     
   }
@@ -76,9 +67,9 @@ function Home() {
 						</ul>
 					</div>
 				}
-                <input value={iname} onChange={(e)=> setName(e.target.value)} type="text" className='form-control' placeholder='Enter your email' />
+                <input ref={iemailRef} type="text" className='form-control' placeholder='Enter your email' />
                 <br/>
-                <input value={ipass} onChange={(e)=> setPass(e.target.value)} type="text" className='form-control' placeholder='Enter your password' />
+                <input ref={ipassRef} type="text" className='form-control' placeholder='Enter your password' />
                 <br />
                 <div className='d-flex justify-content-center'>
                   {
@@ -112,6 +103,5 @@ function Home() {
   )
 }
 
-// style={{display: "block", margin: 'auto'}}
 
 export default Home;

@@ -1,4 +1,4 @@
-const prod = true;
+const prod = false;
 var prex;
 if(prod){
     prex = "https://facegaram.herokuapp.com"

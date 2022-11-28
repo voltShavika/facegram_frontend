@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react'
 import Header from "./Header";
 import PostCard from './PostCard';
 import CreatePost from './CreatePost';
+import { useSelector } from 'react-redux';
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -14,6 +15,8 @@ function Dashboard() {
   const [posts, setPosts] = useState([]);
   const [loading,setLoading] = useState(false);
   
+  const userData = useSelector((state) => state.user);
+
   
   const getPostCallback = (new_post) => {
     setPosts([new_post, ...posts]);
@@ -37,7 +40,7 @@ function Dashboard() {
 
   return (
     <>
-      <Header />
+      <Header name={userData.userObj.name}/>
       <div className='container-fluid'>
 		
         <CreatePost callback={getPostCallback} />
