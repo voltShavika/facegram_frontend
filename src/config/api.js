@@ -1,7 +1,7 @@
-const prod = false;
+const prod = true;
 var prex;
 if(prod){
-    prex = "https://facegaram.herokuapp.com"
+    prex = "https://facegrambackend.onrender.com"
 }
 else{
     prex = "http://localhost"
