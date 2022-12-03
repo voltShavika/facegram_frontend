@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useSelector } from 'react-redux';
 
 import { Create_post_API } from '../config/api';
 
@@ -25,6 +26,7 @@ export default function CreatePost(props) {
     const [image,setImage] = useState("");
     const [errors,setErrors] = useState([]);
     const [loading,setLoading] = useState(false);
+    const userData = useSelector((state)=>state.user.userObj);
 
     const [show, setShow] = useState(false);
 
@@ -47,7 +49,7 @@ export default function CreatePost(props) {
             setErrors([]);
             setLoading(true);
             axios.post(Create_post_API,{
-                posted_by:"shavika619@gmail.com",
+                posted_by:userData.email,
                 caption:caption,
                 image:image
             }).then((res)=>{

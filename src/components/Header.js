@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Header() {
+export default function Header(props) {
   return (
     <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -15,7 +15,7 @@ export default function Header() {
                 <ul className="navbar-nav">
                     <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            User
+                            {props.name}
                         </a>
                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <li><a className="dropdown-item" href="#">Profile</a></li>
