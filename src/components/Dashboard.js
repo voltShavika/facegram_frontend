@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react'
+import {Navigate} from 'react-router';
 import Header from "./Header";
 import PostCard from './PostCard';
 import CreatePost from './CreatePost';
@@ -40,6 +41,9 @@ function Dashboard() {
 
   return (
     <>
+      {
+        !userData.userObj && <Navigate to="/" />
+      }
       <Header name={userData.userObj != null? userData.userObj.name: ""}/>
       <div className='container-fluid'>
 		

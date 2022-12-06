@@ -10,6 +10,7 @@ import {
   Routes,
   Route,
   Link,
+  Navigate,
   useNavigate
 } from 'react-router-dom'
 import Test from './components/Test';
@@ -19,11 +20,10 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route exact path="/test" element={<Test/>}></Route>
           <Route exact path="/" element={<Home/>} ></Route>
           <Route exact path="/signup" element={<Signup/>}></Route>
           <Route exact path="/dashboard" element={<Dashboard/>}></Route>
-          <Route exact path="*" element={<h1>Error 404</h1>}></Route>
+          <Route exact path="*" element={<Navigate to="/" />}></Route>
         </Routes>
       </Router>
     </Provider>
