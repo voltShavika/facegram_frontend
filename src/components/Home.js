@@ -70,7 +70,7 @@ function Home() {
 				}
                 <input ref={iemailRef} type="text" className='form-control' placeholder='Enter your email' />
                 <br/>
-                <input ref={ipassRef} type="text" className='form-control' placeholder='Enter your password' />
+                <input ref={ipassRef} type="password" className='form-control' placeholder='Enter your password' />
                 <br />
                 <div className='d-flex justify-content-center'>
                   {

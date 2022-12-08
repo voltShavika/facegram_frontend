@@ -84,7 +84,7 @@ export default function Signup() {
                         <br/>
                         <input type= "number" ref={numRef}  className='form-control' placeholder='Enter your phone number' />
                         <br/>
-                        <input type="text"  ref={passRef} className='form-control' placeholder='Enter your password' />
+                        <input type="password"  ref={passRef} className='form-control' placeholder='Enter your password' />
                         <br/>
                         {
                             loading && <h6>Loading......</h6>
