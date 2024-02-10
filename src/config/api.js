@@ -1,7 +1,7 @@
 const prod = true;
 var prex;
 if(prod){
-    prex = "https://facegrambackend.onrender.com"
+    prex = "http://13.49.244.88"
 }
 else{
     prex = "http://localhost"
